@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency pairs</title>
+</head>
+<body>
+<h1>List of available currency pairs</h1>
+<ul>
+    {% for pair in pairs_list %}
+     <li>{{ pair }}</li>
+    {% endfor %}
+</ul>
+</body>
+</html>
