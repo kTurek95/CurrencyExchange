@@ -17,3 +17,6 @@ class CurrencyExchangeRate(models.Model):
     currency = models.ForeignKey(AvailableCurrency, on_delete=models.CASCADE)
     rate_to_usd = models.CharField(max_length=255)
     api_date_updated = models.DateField()
+
+    def __str__(self):
+        return f'{self.currency.code} equal {self.rate_to_usd}'
