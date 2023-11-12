@@ -9,6 +9,8 @@ class AvailableCurrency(models.Model):
     country_name = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=255)
 
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='AvailableCurrency')
+
     def __str__(self):
         return f'{self.code} - {self.name}'
 
@@ -18,5 +20,7 @@ class CurrencyExchangeRate(models.Model):
     rate_to_usd = models.CharField(max_length=255)
     api_date_updated = models.DateField()
 
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='CurrencyExchangeRate')
+
     def __str__(self):
-        return f'{self.currency.code} equal {self.rate_to_usd}'
+        return f'{self.currency.code} - {self.rate_to_usd}'
