@@ -1,10 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.http import HttpResponse
-from django.utils.dateparse import parse_date
-from django.utils import timezone
 import requests
 import json
-import datetime
+from datetime import date
 from AvailableCurrencies.models import CurrencyExchangeRate, AvailableCurrency
 
 
@@ -24,14 +22,16 @@ class Command(BaseCommand):
         else:
             for code, rate in content['rates'].items():
                 currency_instance = AvailableCurrency.objects.get(code=code)
-                api_date_str = content.get('date')
-                api_date = parse_date(api_date_str) if api_date_str else timezone.now().date()
-                if not isinstance(api_date, datetime.date):
-                    api_date = timezone.now().date()
-                CurrencyExchangeRate.objects.update_or_create(
+                existing_rate = CurrencyExchangeRate.objects.filter(
                     currency=currency_instance,
-                    defaults={'rate_to_usd': rate,
-                              'api_date_updated': api_date}
-                )
+                    api_date_updated=date.today()
+                ).first()
+
+                if not existing_rate:
+                    CurrencyExchangeRate.objects.create(
+                        currency=currency_instance,
+                        rate_to_usd=rate,
+                        api_date_updated=date.today()
+                    )
 
         self.stdout.write('Currencies rate were updated')
