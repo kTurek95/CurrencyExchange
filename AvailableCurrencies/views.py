@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.template import loader
 from django.http import HttpResponse
+from django.core.paginator import Paginator
 import json
 import requests
 from .models import AvailableCurrency, CurrencyExchangeRate
@@ -11,8 +12,11 @@ def currencies(request):
 
 
 def currencies_list(request):
-    currencies = AvailableCurrency.objects.all()
-    context = {'currencies_list': currencies}
+    currencies = AvailableCurrency.objects.all().order_by('name')
+    paginator = Paginator(currencies, 30)
+    page_number = request.GET.get('page')
+    currencies_list = paginator.get_page(page_number)
+    context = {'currencies_list': currencies_list}
     return render(request, 'AvailableCurrencies/currencies_list.html', context)
 
 
@@ -49,3 +53,12 @@ def currencies_details(request, currency_id: int):
     context = {'currency_details': currency,
                'rates': rate}
     return render(request, 'AvailableCurrencies/currencies_details.html', context)
+
+
+def currencies_rate(request):
+    rate = CurrencyExchangeRate.objects.all().order_by('currency__code')
+    paginator = Paginator(rate,30)
+    page_number = request.GET.get('page')
+    rates_list = paginator.get_page(page_number)
+    context = {'currencies_rate': rates_list}
+    return render(request, 'AvailableCurrencies/currencies_rate.html', context)
