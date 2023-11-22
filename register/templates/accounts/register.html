@@ -1,0 +1,58 @@
+{%  extends 'main/about.html' %}
+
+{%  block title %} Create account {% endblock %}
+
+{%  block content %}
+<form class="register-form" method="POST">
+    {%  csrf_token %}
+    <p>
+        <p>Username*</p>
+        <input type="text" name="username" id="id_username">
+    </p>
+    <p>
+        <p>Email*</p>
+        <input type="email" name="email" id="id_email">
+    </p>
+    <p>
+        <p>First name*</p>
+        <input type="text" name="first_name" id="id_password1">
+    </p>
+    <p>
+        <p>Last name*</p>
+        <input type="text" name="last_name" id="id_password1">
+    </p>
+    <p>
+        <p>Password*</p>
+        <input type="password" name="password1" id="id_password1">
+    </p>
+    <p>
+        <p>Password confirmation*</p>
+        <input type="password" name="password2" id="id_password1">
+
+    </p>
+    <p>
+        <input type="submit" value="Register">
+    </p>
+    {% if form.non_field_errors %}
+        <div class="errorlist">
+            {% for error in form.non_field_errors %}
+                <div class="error">{{ error }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% for field in form %}
+        {% if field.errors %}
+            <ul class="errorlist">
+                <li>{{ field.label }}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        {% endif %}
+    {% endfor %}
+</form>
+{% endblock %}
