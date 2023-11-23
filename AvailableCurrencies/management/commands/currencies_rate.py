@@ -31,7 +31,8 @@ class Command(BaseCommand):
                     CurrencyExchangeRate.objects.create(
                         currency=currency_instance,
                         rate_to_usd=rate,
-                        api_date_updated=date.today()
+                        api_date_updated=date.today(),
+                        user_id=1
                     )
 
         self.stdout.write('Currencies rate were updated')
