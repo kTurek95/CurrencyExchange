@@ -10,6 +10,8 @@ class AvailableCurrency(models.Model):
     status = models.CharField(max_length=255)
 
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='AvailableCurrency')
+    example_file = models.FileField(upload_to='AvailableCurrencies/examples/', blank=True, null=True)
+    image = models.ImageField(upload_to='app/images')
 
     def __str__(self):
         return f'{self.code} - {self.name}'
