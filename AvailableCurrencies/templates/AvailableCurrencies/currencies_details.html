@@ -1,4 +1,5 @@
 {%  extends 'main/about.html' %}
+{%  load static %}
 {% block content %}
 <div>
     <h1>Currency name - {{ currency_details.name }}</h1>
@@ -7,5 +8,12 @@
     {% else %}
         <p>Used in {{ currency_details.country_name }}</p>
     {%  endif %}
+    {%  if currency_details.example_file %}
+        <div>Download <a href="{{ currency_details.example_file.url }}">file</a> </div>
+    {%  endif %}
+    {%  if currency_details.image %}
+        <img src="{{ currency_details.image }}" alt="Image">
+    {%  endif %}
+    <img src="{% static 'AvailableCurrencies/img/' %}{{ image_name }}?{{ rand }}" alt="Currency Chart">
 </div>
 {% endblock %}
