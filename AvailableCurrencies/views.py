@@ -84,7 +84,7 @@ def currencies_rate(request):
     latest_rates = CurrencyExchangeRate.objects.values('currency_id').annotate(latest_date=Max('api_date_updated'))
     rate = CurrencyExchangeRate.objects.filter(
         api_date_updated__in=[item['latest_date'] for item in latest_rates]
-    ).order_by('currency__code')
+    ).order_by('currency__code').select_related('currency').order_by('currency__code')
     paginator = Paginator(rate, 30)
     page_number = request.GET.get('page')
     rates_list = paginator.get_page(page_number)
