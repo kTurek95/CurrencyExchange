@@ -3,10 +3,12 @@
 {%  block content %}
 <h1>Available currencies list</h1>
     <ul>
-    {% for currency in currencies_list %}
-    <li>
-        <a href="{%  url 'currencies:details' currency.pk %}">{{ currency.code }}</a>
-    </li>
+    {%for currency in currencies_list %}
+        {%if currency.country_code != 'Crypto' %}
+            <li>
+                <a href="{%  url 'currencies:details' currency.pk %}">{{ currency.code }}</a>
+            </li>
+        {%  endif %}
     {%  endfor %}
 </ul>
 

@@ -12,11 +12,13 @@
             <th>Rate</th>
         </tr>
     {% for rate in currencies_rate %}
-    <tr>
-        <td>{{ rate.currency.name }}</td>
-        <td>{{ rate.currency.code }}</td>
-        <td>{{ rate.rate_to_usd|floatformat:2 }}</td>
-    </tr>
+        {% if rate.currency.country_code != 'Crypto' %}
+        <tr>
+            <td>{{ rate.currency.name }}</td>
+            <td>{{ rate.currency.code }}</td>
+            <td>{{ rate.rate_to_usd|floatformat:2 }}</td>
+        </tr>
+        {% endif %}
     {% endfor %}
     </table>
 </div>
