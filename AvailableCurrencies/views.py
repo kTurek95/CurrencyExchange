@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.db.models import Max
@@ -17,7 +18,7 @@ def currencies(request):
 
 
 def currencies_list(request):
-    currencies = AvailableCurrency.objects.all().order_by('name')
+    currencies = AvailableCurrency.objects.exclude(Q(country_name='Global'))
     paginator = Paginator(currencies, 30)
     page_number = request.GET.get('page')
     currencies_list = paginator.get_page(page_number)
