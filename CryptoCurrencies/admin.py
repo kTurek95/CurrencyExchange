@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import CryptoTokenCurrency
 
-# Register your models here.
+
+class CryptoCurrenciesAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(CryptoTokenCurrency, CryptoCurrenciesAdmin)
