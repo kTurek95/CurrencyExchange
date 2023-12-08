@@ -21,18 +21,22 @@ class Command(BaseCommand):
             return HttpResponse('Wrong format')
         else:
             for code, rate in content['rates'].items():
-                currency_instance = AvailableCurrency.objects.get(code=code)
-                existing_rate = CurrencyExchangeRate.objects.filter(
-                    currency=currency_instance,
-                    api_date_updated=date.today()
-                ).first()
-
-                if not existing_rate:
-                    CurrencyExchangeRate.objects.create(
+                try:
+                    currency_instance = AvailableCurrency.objects.get(code=code)
+                except AvailableCurrency.DoesNotExist:
+                    print(f"{code} does not exist in the database.")
+                else:
+                    existing_rate = CurrencyExchangeRate.objects.filter(
                         currency=currency_instance,
-                        rate_to_usd=rate,
-                        api_date_updated=date.today(),
-                        user_id=1
-                    )
+                        api_date_updated=date.today()
+                    ).first()
+
+                    if not existing_rate:
+                        CurrencyExchangeRate.objects.create(
+                            currency=currency_instance,
+                            rate_to_usd=rate,
+                            api_date_updated=date.today(),
+                            user_id=1
+                        )
 
         self.stdout.write('Currencies rate were updated')
