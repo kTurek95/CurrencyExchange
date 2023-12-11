@@ -1,0 +1,41 @@
+.parent-container {
+    position: relative;
+    }
+
+.additional-button {
+    position: absolute;
+    background-color: gray;
+    top: 5%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    width: 25%;
+    height: 10%;
+}
+
+.additional-button a.nav-link {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.additional-button a.nav-link:hover {
+    text-decoration: underline;
+}
+
+.value-increased {
+    color: green;
+}
+
+.value-decreased {
+    color: red;
+}
+
+.value-same {
+    color: grey;
+}
+
+.currency-name {
+    font-size: 1.2em;
+    text-decoration: underline;
+}
