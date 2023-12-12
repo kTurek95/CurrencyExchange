@@ -6,7 +6,7 @@ from django.db.models import Max
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from matplotlib import pyplot as plt
 import matplotlib
 import matplotlib.dates as mdates
@@ -108,3 +108,24 @@ def login_view(request):
         form = AuthenticationForm()
 
     return render(request, 'registration/login.html', {'form': form})
+
+
+def compare_previous_day_rate(request):
+    today = date.today()
+    currency_list = AvailableCurrency.objects.all()
+    yesterday_date = today - timedelta(days=1)
+    today_rates = {rate.currency_id: rate for rate in CurrencyExchangeRate.objects.filter(api_date_updated=today)}
+    yesterday_rates = {rate.currency_id: rate for rate in
+                       CurrencyExchangeRate.objects.filter(api_date_updated=yesterday_date)}
+    difference = []
+    for currency in currency_list:
+        today_rate = today_rates.get(currency.id)
+        yesterday_rate = yesterday_rates.get(currency.id)
+
+        if today_rate and yesterday_rate:
+            diff = round(float(today_rate.rate_to_usd) - float(yesterday_rate.rate_to_usd), 6)
+            difference.append((currency, diff))
+
+    context = {'difference': difference}
+
+    return render(request, 'AvailableCurrencies/currency-compare-to-previous-day.html', context)
