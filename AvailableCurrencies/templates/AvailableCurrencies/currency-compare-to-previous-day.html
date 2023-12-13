@@ -1,0 +1,21 @@
+{%  extends 'AvailableCurrencies/currencies_list.html' %}
+{% block content %}
+    <h1> Currency increase/decrease compared to the previous day </h1>
+    <div>
+        <ul>
+            {% for currency, diff in difference %}
+                    <li class="{% if diff > 0 %}value-increased{% elif diff < 0 %}value-decreased{% else %}value-same{% endif %}">
+                        {% if diff > 0 %}
+                            Value <span class="currency-name">{{ currency.name }}</span> increased by {{ diff }} $
+                        {% elif diff < 0 %}
+                            Value <span class="currency-name">{{ currency.name }}</span> decreased by {{ diff }} $
+                        {% else %}
+                            Value <span class="currency-name">{{ currency.name }}</span> is at the same level.
+                        {% endif %}
+                    </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+
