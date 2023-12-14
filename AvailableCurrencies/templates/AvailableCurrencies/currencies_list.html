@@ -1,17 +1,27 @@
 {% extends 'main/about.html' %}
-
+{% block head %}
+{%  load static %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'AvailableCurrencies/css/style.css' %}">
+{% endblock head %}
 {%  block content %}
-<h1>Available currencies list</h1>
+<div class="parent-container">
+    <button type="button" class="additional-button">
+        <a class="nav-link active" aria-current="page" href="{% url 'currencies:compare_rate' %}">
+            Check Crypto/token rate compare to yesterday rate
+        </a>
+    </button>
+    <h1>Available currencies list</h1>
     <ul>
-    {%for currency in currencies_list %}
-        {%if currency.country_code != 'Crypto' %}
-            <li>
-                <a href="{%  url 'currencies:details' currency.pk %}">{{ currency.code }}</a>
-            </li>
-        {%  endif %}
-    {%  endfor %}
-</ul>
-
+        {% for currency in currencies_list %}
+            {% if currency.country_code != 'Crypto' %}
+                <li>
+                    <a href="{% url 'currencies:details' currency.pk %}">{{ currency.code }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
 
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
