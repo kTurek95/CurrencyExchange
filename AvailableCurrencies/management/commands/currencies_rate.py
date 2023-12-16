@@ -1,7 +1,10 @@
+from os import getenv
+
 from django.core.management.base import BaseCommand
 from django.http import HttpResponse
 import requests
 import json
+from dotenv import load_dotenv
 from datetime import date
 from AvailableCurrencies.models import CurrencyExchangeRate, AvailableCurrency
 
@@ -10,8 +13,10 @@ class Command(BaseCommand):
     help = 'Updated currencies rate'
 
     def handle(self, *args, **options):
+        load_dotenv()
+        api_key = getenv('APIKEY_CURRENCIES')
         params = {
-            'apikey': 'e0ad4966bceb4346b7949c5e3d5a6dee',
+            'apikey': api_key,
         }
 
         r = requests.get('https://api.currencyfreaks.com/v2.0/rates/latest', params)
