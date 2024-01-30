@@ -8,7 +8,7 @@ urlpatterns = [
     path('currencies/', include('AvailableCurrencies.urls')),
     path('currencypairs/', include('CurrencyPairs.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('test', include('CryptoCurrencies.urls')),
+    path('crypto', include('CryptoCurrencies.urls')),
     path('', include('main.urls')),
     path('', include('register.urls'))
 ]
