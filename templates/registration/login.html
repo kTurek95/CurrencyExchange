@@ -1,0 +1,25 @@
+{%  extends 'main/about.html' %}
+
+{%  block title %} Login to your account {% endblock %}
+
+{%  block content %}
+<form class="register-form" method="POST">
+    {%  csrf_token %}
+    <p>
+        <p>Username*</p>
+        <input type="text" name="username" id="id_user">
+    </p>
+    <p>
+        <p>Password*</p>
+        <input type="password" name="password" id="id_password">
+    </p>
+    <p>
+        <input type="submit" value="Login">
+    </p>
+    {% if form.non_field_errors %}
+    <div class="error">
+        {{ form.non_field_errors }}
+    </div>
+    {% endif %}
+</form>
+{% endblock %}
