@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-s2ii%c!1)r9irm)ui7qx1+^ly2m($rw7#0aa0kmwbx(ae+@3tn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-app-currency-exchange.herokuapp.com']
+ALLOWED_HOSTS = ['django-app-currency-exchange-b5c4edfc43c0.herokuapp.com']
 
 
 # Application definition
