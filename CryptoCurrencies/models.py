@@ -2,7 +2,7 @@ from django.db import models
 
 
 class CryptoTokenCurrency(models.Model):
-    code = models.CharField(max_length=6)
+    code = models.CharField(max_length=15)
     name = models.CharField(max_length=50, null=False)
     description = models.CharField(max_length=2000, null=True)
 
