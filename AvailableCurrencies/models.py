@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 class AvailableCurrency(models.Model):
     name = models.CharField(max_length=255, null=True)
-    code = models.CharField(max_length=5)
-    country_code = models.CharField(max_length=5, null=True)
+    code = models.CharField(max_length=8)
+    country_code = models.CharField(max_length=8, null=True)
     country_name = models.CharField(max_length=255, null=True)
     status = models.CharField(max_length=255)
 
