@@ -12,7 +12,7 @@ class CryptoTokenCurrency(models.Model):
 
 class CryptoTokenRate(models.Model):
     token = models.ForeignKey(CryptoTokenCurrency, on_delete=models.CASCADE)
-    rate_to_usd = models.CharField(max_length=10)
+    rate_to_usd = models.CharField(max_length=20)
     date = models.DateField()
 
     @staticmethod
