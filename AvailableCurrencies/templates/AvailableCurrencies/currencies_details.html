@@ -3,11 +3,6 @@
 {% block content %}
 <div>
     <h1>Currency name - {{ currency_details.name }}</h1>
-    {% if currency_details.country_name == 'Global' %}
-        <p>It is a cryptocurrency</p>
-    {% else %}
-        <p>Used in {{ currency_details.country_name }}</p>
-    {%  endif %}
     {%  if currency_details.example_file %}
         <div>Download <a href="{{ currency_details.example_file.url }}">file</a> </div>
     {%  endif %}

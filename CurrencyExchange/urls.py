@@ -2,13 +2,17 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+import os
+
+admin_url = os.environ.get('DJANGO_ADMIN_URL', 'admin/')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin_url/', admin.site.urls),
     path('currencies/', include('AvailableCurrencies.urls')),
     path('currencypairs/', include('CurrencyPairs.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('crypto', include('CryptoCurrencies.urls')),
+    # path('tinymce/', include('tinymce.urls')),
     path('', include('main.urls')),
     path('', include('register.urls'))
 ]
