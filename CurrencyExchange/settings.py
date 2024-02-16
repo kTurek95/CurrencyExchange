@@ -13,7 +13,7 @@ import os
 from pathlib import Path
 import django_heroku
 import dj_database_url
-import os
+from decouple import Config, RepositoryEnv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+dotenv_file = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+if os.path.isfile(dotenv_file):
+    os.environ['DJANGO_READ_DOT_ENV_FILE'] = 'True'
+
+env_config = Config(RepositoryEnv(dotenv_file))
+SECRET_KEY = env_config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
