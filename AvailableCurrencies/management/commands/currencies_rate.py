@@ -1,5 +1,4 @@
 from os import getenv
-
 from django.core.management.base import BaseCommand
 from django.http import HttpResponse
 import requests
