@@ -11,6 +11,7 @@ from matplotlib import pyplot as plt
 import matplotlib
 import matplotlib.dates as mdates
 from .models import AvailableCurrency, CurrencyExchangeRate
+from django.contrib.auth.decorators import login_required
 
 
 def currencies(request):
@@ -26,6 +27,7 @@ def currencies_list(request):
     return render(request, 'AvailableCurrencies/currencies_list.html', context)
 
 
+@ login_required()
 def currencies_details(request, currency_id: int):
     matplotlib.use('Agg')
     five_days_ago = datetime.now() - timedelta(days=5)
@@ -110,6 +112,7 @@ def login_view(request):
     return render(request, 'registration/login.html', {'form': form})
 
 
+@login_required()
 def compare_previous_day_rate(request):
     today = date.today()
     currency_list = AvailableCurrency.objects.all()
