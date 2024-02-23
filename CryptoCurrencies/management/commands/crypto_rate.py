@@ -44,7 +44,7 @@ class Command(BaseCommand):
         currencies_to_remove = []
 
         batch_size = 1000
-        currencies = CryptoTokenCurrency.objects.all()
+        currencies = CryptoTokenCurrency.objects.all().order_by('id')
         paginator = Paginator(currencies, batch_size)
         for page_num in range(1, paginator.num_pages + 1):
             for crypto in tqdm(paginator.page(page_num), total=batch_size, desc='Processing page {page_num}'):
