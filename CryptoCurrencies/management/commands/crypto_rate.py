@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 response = requests.get(
                     url=f'https://min-api.cryptocompare.com/data/price?fsym='
                         f'{crypto}&tsyms=USD&api_key={api_key}',
-                    timeout=5)
+                    timeout=30)
                 response.raise_for_status()
                 content = response.json()
                 if 'Response' in content and content['Response'] == 'Error':
