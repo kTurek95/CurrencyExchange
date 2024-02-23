@@ -2,12 +2,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
+from dotenv import load_dotenv
 import os
 
+load_dotenv()
 admin_url = os.environ.get('DJANGO_ADMIN_URL', 'admin/')
 
 urlpatterns = [
-    path('admin_url/', admin.site.urls),
+    path(f'{admin_url}/', admin.site.urls),
     path('currencies/', include('AvailableCurrencies.urls')),
     path('currencypairs/', include('CurrencyPairs.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
