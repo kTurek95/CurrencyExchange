@@ -38,12 +38,15 @@
     </div>
     <div class="col-md-3 text-end">
    {% if user.is_authenticated %}
-       <a type="button" class="btn btn-outline-primary me-2" href="{% url "logout" %}">Logout</a>
+       <form action="{% url 'logout' %}" method="post">
+           {% csrf_token %}
+           <button type="submit" class="btn btn-outline-primary me-2">Logout</button>
+       </form>
    {% else %}
-       <a type="button" class="btn btn-outline-primary me-2" href="{% url "login" %}">Login</a>
-       <a type="button" class="btn btn-primary" href="{% url "register:register" %}">Sign-up</a>
+       <a type="button" class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
+       <a type="button" class="btn btn-primary" href="{% url 'register:register' %}">Sign-up</a>
    {% endif %}
-    </div>
+</div>
 </div>
 </nav>
 {% block content %}
@@ -71,12 +74,20 @@
         {%  if result %}
              <label>You will receive: {{ result }}$</label>
         {%  if currency_rate %}
-            <p> The exchange rate was: {{ currency_rate }}</p>
+            <p> The exchange rate for {{ currency_name }} was: {{ currency_rate }}</p>
         {% endif %}
         {% endif %}
     </p>
 </form>
 
 {% endblock %}
+
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock messages %}
 </body>
 </html>
