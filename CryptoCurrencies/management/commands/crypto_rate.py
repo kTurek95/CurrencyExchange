@@ -13,6 +13,7 @@ process and removes cryptocurrencies from the database if they are no longer sup
 
 from datetime import date
 from os import getenv
+from django.core.paginator import Paginator
 from tqdm import tqdm
 from django.core.management.base import BaseCommand
 import requests
@@ -38,45 +39,48 @@ class Command(BaseCommand):
         are handled gracefully, and unsupported currencies are marked for removal.
         """
         load_dotenv()
-        api_key = getenv('APIKEY_CRYPTO')
+        api_key = getenv('APIKEY_CRYPTO2')
 
         currencies_to_remove = []
 
+        batch_size = 1000
         currencies = CryptoTokenCurrency.objects.all()
-        for crypto in tqdm(currencies):
-            try:
-                response = requests.get(
-                    url=f'https://min-api.cryptocompare.com/data/price?fsym='
-                        f'{crypto}&tsyms=USD&api_key={api_key}',
-                    timeout=90)
-                response.raise_for_status()
-                content = response.json()
-                if 'Response' in content and content['Response'] == 'Error':
-                    self.stderr.write(f"Error for {crypto.code}: {content['Message']}")
-                    if crypto.id is not None:
-                        currencies_to_remove.append(crypto)
-                    continue
-                if 'USD' not in content:
-                    rate_to_usd = 0
-                else:
-                    rate_to_usd = round(content['USD'], 5)
+        paginator = Paginator(currencies, batch_size)
+        for page_num in range(1, paginator.num_pages + 1):
+            for crypto in tqdm(paginator.page(page_num), total=batch_size, desc='Processing page {page_num}'):
+                try:
+                    response = requests.get(
+                        url=f'https://min-api.cryptocompare.com/data/price?fsym='
+                            f'{crypto}&tsyms=USD&api_key={api_key}',
+                        timeout=30)
+                    response.raise_for_status()
+                    content = response.json()
+                    if 'Response' in content and content['Response'] == 'Error':
+                        self.stderr.write(f"Error for {crypto.code}: {content['Message']}")
+                        if crypto.id is not None:
+                            currencies_to_remove.append(crypto)
+                        continue
+                    if 'USD' not in content:
+                        rate_to_usd = 0
+                    else:
+                        rate_to_usd = round(content['USD'], 5)
 
-                if rate_to_usd != 0:
-                    existing_record \
-                        = CryptoTokenRate.objects.filter(token=crypto, date=date.today()).first()
-                    if not existing_record:
-                        CryptoTokenRate.objects.create(
-                            token=crypto,
-                            rate_to_usd=rate_to_usd,
-                            date=date.today()
-                        )
-            except requests.exceptions.Timeout:
-                self.stderr.write('Timeout')
-            except requests.exceptions.RequestException as e:
-                self.stderr.write(f"Error: {str(e)}")
-            # pylint: disable=broad-exception-caught
-            except Exception as e:
-                self.stderr.write(f"Error: {str(e)}")
+                    if rate_to_usd != 0:
+                        existing_record \
+                            = CryptoTokenRate.objects.filter(token=crypto, date=date.today()).first()
+                        if not existing_record:
+                            CryptoTokenRate.objects.create(
+                                token=crypto,
+                                rate_to_usd=rate_to_usd,
+                                date=date.today()
+                            )
+                except requests.exceptions.Timeout:
+                    self.stderr.write('Timeout')
+                except requests.exceptions.RequestException as e:
+                    self.stderr.write(f"Error: {str(e)}")
+                # pylint: disable=broad-exception-caught
+                except Exception as e:
+                    self.stderr.write(f"Error: {str(e)}")
 
         for currency in currencies_to_remove:
             currency.delete()
