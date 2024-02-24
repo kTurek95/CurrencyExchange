@@ -47,7 +47,7 @@ class Command(BaseCommand):
         currencies = CryptoTokenCurrency.objects.all().order_by('id')
         paginator = Paginator(currencies, batch_size)
         for page_num in range(1, paginator.num_pages + 1):
-            for crypto in tqdm(paginator.page(page_num), total=batch_size, desc='Processing page {page_num}'):
+            for crypto in tqdm(paginator.page(page_num), total=batch_size, desc=f'Processing page {page_num}'):
                 try:
                     response = requests.get(
                         url=f'https://min-api.cryptocompare.com/data/price?fsym='
