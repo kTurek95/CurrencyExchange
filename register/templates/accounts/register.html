@@ -2,6 +2,14 @@
 
 {%  block title %} Create account {% endblock %}
 
+{% block messages %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
 {%  block content %}
 <form class="register-form" method="POST">
     {%  csrf_token %}
