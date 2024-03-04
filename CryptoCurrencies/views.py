@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 
 def crypto_token(request):
-    crypto = CryptoTokenCurrency.objects.all()
+    crypto = CryptoTokenCurrency.objects.all().order_by('code')
     paginator = Paginator(crypto, 300)
     page_number = request.GET.get('page')
     crypto_token = paginator.get_page(page_number)

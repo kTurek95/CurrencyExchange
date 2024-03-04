@@ -19,7 +19,7 @@ def currencies(request):
 
 
 def currencies_list(request):
-    currencies = AvailableCurrency.objects.exclude(Q(country_name='Global'))
+    currencies = AvailableCurrency.objects.exclude(Q(country_name='Global')).order_by('name')
     paginator = Paginator(currencies, 30)
     page_number = request.GET.get('page')
     currencies_list = paginator.get_page(page_number)
