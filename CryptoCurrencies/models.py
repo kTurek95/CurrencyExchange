@@ -7,7 +7,7 @@ class CryptoTokenCurrency(models.Model):
     description = models.CharField(max_length=5000, null=True)
 
     def __str__(self):
-        return self.code
+        return self.name
 
 
 class CryptoTokenRate(models.Model):
