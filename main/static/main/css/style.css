@@ -3,11 +3,6 @@
     height: 50px;
 }
 
-.container_h1 {
-    display: flex;
-    justify-content: center;
-}
-
 .container_table {
     display: flex;
     justify-content: center;
@@ -26,6 +21,7 @@ table {
     margin-left: auto;
     margin-right: auto;
     border: 5px solid black;
+    padding: 50px;
 }
 
 .form-title {
@@ -33,10 +29,14 @@ table {
     justify-content: center;
 }
 
-.register-form {
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
+.info-container {
+    width: 50%;
+    margin-left: 500px;
+    margin-bottom: 50px;
+    margin-top: 15px;
 }
 
+.wallet{
+    width: 50%;
+    margin-left: 425px;
+}
