@@ -9,13 +9,17 @@ def crypto_token(request):
     paginator = Paginator(crypto, 300)
     page_number = request.GET.get('page')
     crypto_token = paginator.get_page(page_number)
-    context = {'crypto_token': crypto_token}
+    context = {
+        'crypto_token': crypto_token,
+        'active_menu': 'Available Crypto/Tokens'}
     return render(request, 'CryptoCurrencies/crypto-token-list.html', context)
 
 
 @ login_required
 def crypto_token_details(request, crypto_id: int):
     crypto_details = CryptoTokenCurrency.objects.get(pk=crypto_id)
-    context = {'crypto_token_details': crypto_details}
+    context = {
+        'crypto_token_details': crypto_details,
+        'active_menu': 'Available Crypto/Tokens'}
 
     return render(request, 'CryptoCurrencies/crypto-token-details.html', context)

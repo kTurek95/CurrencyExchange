@@ -23,7 +23,9 @@ def currencies_list(request):
     paginator = Paginator(currencies, 30)
     page_number = request.GET.get('page')
     currencies_list = paginator.get_page(page_number)
-    context = {'currencies_list': currencies_list}
+    context = {
+        'currencies_list': currencies_list,
+        'active_menu': 'Available currencies'}
     return render(request, 'AvailableCurrencies/currencies_list.html', context)
 
 
@@ -77,7 +79,8 @@ def currencies_details(request, currency_id: int):
 
     context = {'currency_details': currency,
                'rates': rate,
-               'image_name': f'chart_{currency_id}.png'
+               'image_name': f'chart_{currency_id}.png',
+               'active_menu': 'Available currencies'
                }
 
     return render(request, 'AvailableCurrencies/currencies_details.html', context)
@@ -92,7 +95,9 @@ def currencies_rate(request):
     paginator = Paginator(rate, 15)
     page_number = request.GET.get('page')
     rates_list = paginator.get_page(page_number)
-    context = {'currencies_rate': rates_list}
+    context = {
+        'currencies_rate': rates_list,
+        'active_menu': 'Currencies rate'}
     return render(request, 'AvailableCurrencies/currencies_rate.html', context)
 
 @login_required()
@@ -112,6 +117,8 @@ def compare_previous_day_rate(request):
             diff = round(float(today_rate.rate_to_usd) - float(yesterday_rate.rate_to_usd), 6)
             difference.append((currency, diff))
 
-    context = {'difference': difference}
+    context = {
+        'difference': difference,
+        'active_menu': 'Available currencies'}
 
     return render(request, 'AvailableCurrencies/currency-compare-to-previous-day.html', context)

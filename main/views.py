@@ -22,6 +22,7 @@ def currency_view(request):
         'currency_view': currency,
         'result': result,
         'currency_rate': round(float(rate.rate_to_usd), 2) if rate else None,
-        'currency_name': currency_name
+        'currency_name': currency_name,
+        'active_menu': 'Home'
     }
     return render(request, 'main/about.html', context)
