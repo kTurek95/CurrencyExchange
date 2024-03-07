@@ -54,7 +54,7 @@ def register(request):
                     user.save()
                     send_registration_email(request, user)
                     messages.success(request, 'Account created successfully.')
-                    return render(request, 'accounts/activate_email.html')
+                    return render(request, 'accounts/activate_account.html')
     else:
         form = RegisterForm()
 
@@ -147,4 +147,4 @@ def activate_account(request, uidb64, token):
         user.is_active = True
         user.save()
 
-    return render(request, 'accounts/activate_account.html')
+    return render(request, 'accounts/account_activated.html')
