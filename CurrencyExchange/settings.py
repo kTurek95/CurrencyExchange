@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'AvailableCurrencies.apps.AvailablecurrenciesConfig',
     'main.apps.MainConfig',
     'register.apps.RegisterConfig',
-    'CryptoCurrencies.apps.CryptocurrenciesConfig'
+    'CryptoCurrencies.apps.CryptocurrenciesConfig',
+    'wallet.apps.WalletConfig',
 ]
 
 MIDDLEWARE = [
