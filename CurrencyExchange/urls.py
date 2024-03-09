@@ -13,10 +13,11 @@ urlpatterns = [
     path('currencies/', include('AvailableCurrencies.urls')),
     path('currencypairs/', include('CurrencyPairs.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('crypto', include('CryptoCurrencies.urls')),
+    path('crypto/', include('CryptoCurrencies.urls')),
+    path('wallet/', include('wallet.urls')),
     # path('tinymce/', include('tinymce.urls')),
     path('', include('main.urls')),
-    path('', include('register.urls'))
+    path('', include('register.urls')),
 ]
 
 if settings.DEBUG:
