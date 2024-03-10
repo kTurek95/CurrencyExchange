@@ -5,24 +5,46 @@
 <div class="container_h1">
     <h1>Currencies rate compare to USD</h1>
 </div>
-<div class="container_table">
-    <table>
-        <tr>
-            <th>Currency name</th>
-            <th>Currency code</th>
-            <th>Rate</th>
-        </tr>
-    {% for rate in currencies_rate %}
-        {% if rate.currency.country_code != 'Crypto' %}
-        <tr>
-            <td>{{ rate.currency.name }}</td>
-            <td>{{ rate.currency.code }}</td>
-            <td>{{ rate.rate_to_usd|floatformat:2 }}</td>
-        </tr>
-        {% endif %}
-    {% endfor %}
-    </table>
-</div>
+    <table class="table table-success table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Currency name</th>
+      <th scope="col">Currency code</th>
+      <th scope="col">Currency rate</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for rate in currencies_rate %}
+      {% if rate.currency.country_code != 'Crypto' %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ rate.currency.name }}</td>
+      <td>{{ rate.currency.code }}</td>
+      <td>{{ rate.rate_to_usd|floatformat:2 }}</td>
+    </tr>
+      {% endif %}
+  {% endfor %}
+  </tbody>
+</table>
+{#<div class="container_table">#}
+{#    <table>#}
+{#        <tr>#}
+{#            <th>Currency name</th>#}
+{#            <th>Currency code</th>#}
+{#            <th>Rate</th>#}
+{#        </tr>#}
+{#    {% for rate in currencies_rate %}#}
+{#        {% if rate.currency.country_code != 'Crypto' %}#}
+{#        <tr>#}
+{#            <td>{{ rate.currency.name }}</td>#}
+{#            <td>{{ rate.currency.code }}</td>#}
+{#            <td>{{ rate.rate_to_usd|floatformat:2 }}</td>#}
+{#        </tr>#}
+{#        {% endif %}#}
+{#    {% endfor %}#}
+{#    </table>#}
+{#</div>#}
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
         {% if currencies_rate.has_previous %}

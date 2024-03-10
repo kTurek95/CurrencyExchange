@@ -1,21 +1,57 @@
-{%  extends 'AvailableCurrencies/currencies_list.html' %}
+{%  extends 'main/about.html' %}
+{% block head %}
+{%  load static %}
+{{ block.super }}
+{% endblock head %}
 {% block title %} Rate comparison {% endblock %}
 {% block content %}
-    <h1> Currency increase/decrease compared to the previous day </h1>
-    <div>
-        <ul>
-            {% for currency, diff in difference %}
-                    <li class="{% if diff > 0 %}value-increased{% elif diff < 0 %}value-decreased{% else %}value-same{% endif %}">
+    <style>
+        .currency-h3 {
+            text-align: center;
+        }
+    </style>
+    <h3 class="currency-h3"> Currency increase/decrease compared to the previous day </h3>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <h3 style="color: green">Increases</h3>
+                <ul>
+                    {% for currency, diff in difference %}
                         {% if diff > 0 %}
-                            Value <span class="currency-name">{{ currency.name }}</span> increased by {{ diff }} $
-                        {% elif diff < 0 %}
-                            Value <span class="currency-name">{{ currency.name }}</span> decreased by {{ diff }} $
-                        {% else %}
-                            Value <span class="currency-name">{{ currency.name }}</span> is at the same level.
+                            <li class="value-increased">
+                                <span class="currency-name">{{ currency.name }}</span> o {{ diff }} $
+                            </li>
                         {% endif %}
-                    </li>
-            {% endfor %}
-        </ul>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col">
+                <h3 style="color: red">Decreases</h3>
+                <ul>
+                    {% for currency, diff in difference %}
+                        {% if diff < 0 %}
+                            <li class="value-decreased">
+                                <span class="currency-name">{{ currency.name }}</span> o {{ diff }} $
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="col">
+                <h3 style="color: grey;">Unchanged</h3>
+                <ul>
+                    {% for currency, diff in difference %}
+                        {% if diff == 0 %}
+                            <li class="value-same">
+                                <span class="currency-name">{{ currency.name }}</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
