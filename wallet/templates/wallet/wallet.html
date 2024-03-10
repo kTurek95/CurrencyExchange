@@ -1,0 +1,55 @@
+{% extends 'main/about.html' %}
+{% block head %}
+{%  load static %}
+{{ block.super }}
+{% endblock head %}
+{% block title %} Create wallet {% endblock %}
+{% block content %}
+    <div class="alert alert-secondary" role="alert">
+        Hello {{ user.username }}. On this page you can create your first wallet
+    </div>
+<form method="post" class="wallet_form">
+    {% csrf_token %}
+    <label for="wallet_type">Choose a wallet type:</label>
+    <select name="wallet_type" id="wallet_type">
+        <option value="">-------</option>
+        <option value="Currency">Currency</option>
+        <option value="Crypto">Crypto</option>
+    </select>
+
+    <div id="currency_section" style="display: none;">
+        <label for="currency">Select Currency:</label><br>
+        <select id="currency" name="currency">
+            {% for currency in currencies %}
+                <option value="{{ currency.id }}">{{ currency.code }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div id="crypto_section" style="display: none;">
+        <label for="crypto_currency">Select Crypto Currency:</label><br>
+        <select id="crypto_currency" name="crypto_currency">
+            {% for crypto in crypto_currencies %}
+                <option value="{{ crypto.id }}">{{ crypto.code }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit">Create Wallet</button>
+</form>
+<script>
+document.getElementById('wallet_type').addEventListener('change', function() {
+    var currencySection = document.getElementById('currency_section');
+    var cryptoSection = document.getElementById('crypto_section');
+    currencySection.style.display = 'none';
+    cryptoSection.style.display = 'none';
+
+    if (this.value == 'Currency') {
+        currencySection.style.display = 'block';
+    } else if (this.value == 'Crypto') {
+        cryptoSection.style.display = 'block';
+    }
+});
+</script>
+
+{% endblock %}

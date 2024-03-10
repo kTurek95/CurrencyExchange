@@ -1,0 +1,26 @@
+{% extends 'main/about.html' %}
+{% block head %}
+{%  load static %}
+{{ block.super }}
+{% endblock head %}
+{% block title %} Account balance {% endblock %}
+{% block content %}
+    {% for account in accounts %}
+        {% if account.balance %}
+            {% if account.currency %}
+                <div class="alert alert-secondary" role="alert">
+                    <p> Your account balance is {{ account.balance }} {{ account.currency }}</p>
+                </div>
+            {% elif account.crypto_currency %}
+                <div class="alert alert-secondary" role="alert">
+                    <p> Your account balance is {{ account.balance }} {{ account.crypto_currency }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% empty %}
+        <div class="alert alert-secondary" role="alert">
+            You don't have any wallets.<br> To create the wallet click this link:<br>
+            <a href="{% url 'wallet:info' %}">Create wallet</a>
+        </div>
+    {% endfor %}
+{% endblock %}

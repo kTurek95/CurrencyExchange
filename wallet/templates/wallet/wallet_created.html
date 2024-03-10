@@ -1,0 +1,10 @@
+{% extends 'main/about.html' %}
+{% block head %}
+{%  load static %}
+{{ block.super }}
+{% endblock head %}
+{% block title %} Wallet {% endblock %}
+{% block content %}
+    <p> Thank you for creating the wallet. To check your balance click this link
+        <a href="{% url 'wallet:balance' %}"> Account balance </a> </p>
+{% endblock %}
