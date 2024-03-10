@@ -1,0 +1,30 @@
+.wallet_form {
+    border: 5px solid black;
+    width: 20%;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.wallet-name {
+    color: #0A246A;
+    display: flex;
+    justify-content: center;
+}
+
+.wallet-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.alert-secondary {
+    margin-top: 10px;
+}
+
+.form-select {
+    margin-top: 10px;
+}
+
+.h1-style {
+    color: #00ff80;
+}
