@@ -17,10 +17,12 @@
                 <h3 style="color: green">Increases</h3>
                 <ul>
                     {% for currency, diff in difference %}
+                        {% if currency.country_code != 'Crypto' %}
                         {% if diff > 0 %}
                             <li class="value-increased">
                                 <span class="currency-name">{{ currency.name }}</span> o {{ diff }} $
                             </li>
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -30,10 +32,12 @@
                 <h3 style="color: red">Decreases</h3>
                 <ul>
                     {% for currency, diff in difference %}
+                        {% if currency.country_code != 'Crypto' %}
                         {% if diff < 0 %}
                             <li class="value-decreased">
                                 <span class="currency-name">{{ currency.name }}</span> o {{ diff }} $
                             </li>
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -43,10 +47,12 @@
                 <h3 style="color: grey;">Unchanged</h3>
                 <ul>
                     {% for currency, diff in difference %}
+                        {% if currency.country_code != 'Crypto' %}
                         {% if diff == 0 %}
                             <li class="value-same">
                                 <span class="currency-name">{{ currency.name }}</span>
                             </li>
+                        {% endif %}
                         {% endif %}
                     {% endfor %}
                 </ul>

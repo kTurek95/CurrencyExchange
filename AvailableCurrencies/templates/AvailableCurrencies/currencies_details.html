@@ -2,14 +2,19 @@
 {%  load static %}
 {% block title %} Currency details {% endblock %}
 {% block content %}
-<div>
-    <h1>Currency name - {{ currency_details.name }}</h1>
-    {%  if currency_details.example_file %}
-        <div>Download <a href="{{ currency_details.example_file.url }}">file</a> </div>
-    {%  endif %}
-    {%  if currency_details.image %}
-        <img src="{{ currency_details.image }}" alt="Image">
-    {%  endif %}
-    <img src="{% static 'AvailableCurrencies/img/' %}{{ image_name }}?{{ rand }}" alt="Currency Chart">
-</div>
+    <div>
+        <h1 class="currency-name-h1">Currency name - {{ currency_details.name }}</h1>
+        <div class="currency-chart">
+            {%  if currency_details.example_file %}
+                <div>Download <a href="{{ currency_details.example_file.url }}">file</a> </div>
+            {%  endif %}
+            {%  if currency_details.image %}
+                <img src="{{ currency_details.image }}" alt="Image">
+            {%  endif %}
+            <img src="{% static 'AvailableCurrencies/img/' %}{{ image_name }}?{{ rand }}" alt="Currency Chart">
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-light">
+            <a href="{% url 'currencies:list' %}">Previous page</a>
+    </button>
 {% endblock %}

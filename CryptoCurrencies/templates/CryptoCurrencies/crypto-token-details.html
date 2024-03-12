@@ -1,8 +1,11 @@
 {% extends 'main/about.html' %}
 {% block title %} Crypto/token details {% endblock %}
 {% block content %}
-<div>
-    <h1>{{ crypto_token_details.name }}</h1>
-    <h2>{{ crypto_token_details.description }}</h2>
-</div>
+    <div style="padding-left: 35px; padding-right: 35px">
+        <h1 style="text-align: center; color: cadetblue; border-bottom: 2px solid black">{{ crypto_token_details.name }}</h1>
+        <p style="border: 5px solid black; padding: 30px; background: cadetblue">{{ crypto_token_details.description }}</p>
+    </div>
+    <button type="button" class="btn btn-light">
+        <a href="{% url 'crypto:list' %}">Previous page</a>
+    </button>
 {% endblock %}
