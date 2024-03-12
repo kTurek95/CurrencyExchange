@@ -21,7 +21,9 @@
         <label for="currency">Select Currency:</label><br>
         <select id="currency" name="currency">
             {% for currency in currencies %}
-                <option value="{{ currency.id }}">{{ currency.code }}</option>
+                {% if currency.country_code != 'Crypto' %}
+                    <option value="{{ currency.id }}">{{ currency.code }}</option>
+                {% endif %}
             {% endfor %}
         </select>
     </div>
