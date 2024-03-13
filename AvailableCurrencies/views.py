@@ -1,36 +1,70 @@
-from django.contrib.auth.forms import AuthenticationForm
+"""
+This module provides views for handling currency-related data in a Django application.
+It includes functionalities to display available
+currencies, currency rates, historical currency rates with graphical representation,
+and comparison of currency rates from the previous day.
+
+Functions:
+    currencies - Returns a list of available currencies.
+    currencies_list - Displays a paginated list of available currencies.
+    currencies_details - Shows details and historical rate chart for a selected currency.
+    currencies_rate - Displays current rates for different currencies.
+    compare_previous_day_rate - Compares currency rates with the previous day's rates.
+"""
+
+from datetime import datetime, timedelta, date
+import matplotlib
+from matplotlib import pyplot as plt
+import matplotlib.dates as mdates
 from django.db.models import Q
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.shortcuts import render
 from django.db.models import Max
-from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from datetime import datetime, timedelta, date
-from matplotlib import pyplot as plt
-import matplotlib
-import matplotlib.dates as mdates
-from .models import AvailableCurrency, CurrencyExchangeRate
 from django.contrib.auth.decorators import login_required
+from .models import AvailableCurrency, CurrencyExchangeRate
 
 
-def currencies(request):
-    return HttpResponse('Lista dostępnych Walut')
+def currencies():
+    """
+    Returns a HttpResponse with a list of available currencies.
+    """
+    return HttpResponse('Available currencies list')
 
 
 def currencies_list(request):
-    currencies = AvailableCurrency.objects.exclude(Q(country_name='Global')).order_by('name')
-    paginator = Paginator(currencies, 30)
+    """
+    Displays a paginated list of available currencies.
+
+    Args:
+        request: HttpRequest object used to generate the currencies list.
+
+    Returns:
+        HttpResponse with a rendered template containing the list of currencies.
+    """
+    available_currencies = (
+        AvailableCurrency.objects.exclude(Q(country_name='Global')).order_by('name'))
+    paginator = Paginator(available_currencies, 30)
     page_number = request.GET.get('page')
-    currencies_list = paginator.get_page(page_number)
+    available_currencies_list = paginator.get_page(page_number)
     context = {
-        'currencies_list': currencies_list,
+        'currencies_list': available_currencies_list,
         'active_menu': 'Available currencies'}
     return render(request, 'AvailableCurrencies/currencies_list.html', context)
 
 
 @ login_required()
 def currencies_details(request, currency_id: int):
+    """
+    Displays the details and historical exchange rate chart for a selected currency.
+
+    Args:
+        request: HttpRequest object used to generate the details.
+        currency_id (int): The ID of the currency for which details are to be displayed.
+
+    Returns:
+        HttpResponse with a rendered template containing currency details and a chart.
+    """
     matplotlib.use('Agg')
     five_days_ago = datetime.now() - timedelta(days=5)
 
@@ -40,9 +74,9 @@ def currencies_details(request, currency_id: int):
     currency = AvailableCurrency.objects.get(pk=currency_id)
     rate = CurrencyExchangeRate.objects.filter(currency=currency).first()
 
-    currencies = AvailableCurrency.objects.filter(id=currency_id)
+    available_currencies = AvailableCurrency.objects.filter(id=currency_id)
     rates = CurrencyExchangeRate.objects.filter(
-        currency_id=currencies.first(),
+        currency_id=available_currencies.first(),
         api_date_updated__gt=five_days_ago
     )
     for rate in rates:
@@ -52,7 +86,10 @@ def currencies_details(request, currency_id: int):
     data_pairs = sorted(zip(dates, currency_rates), key=lambda x: x[1])
     sorted_dates, sorted_currency_rates = zip(*data_pairs)
 
-    sorted_dates = [datetime.strptime(date, '%Y-%m-%d') if isinstance(date, str) else date for date in sorted_dates]
+    sorted_dates = \
+        [datetime.strptime
+         (date, '%Y-%m-%d') if isinstance(date, str)
+         else date for date in sorted_dates]
     sorted_currency_rates = [float(rate) for rate in sorted_currency_rates]
 
     plt.figure(figsize=(10, 5))
@@ -64,7 +101,7 @@ def currencies_details(request, currency_id: int):
 
     plt.ylim(min(sorted_currency_rates) - 1, max(sorted_currency_rates) + 1)
 
-    plt.title(currencies.first())
+    plt.title(available_currencies.first())
     plt.xlabel('Dates')
     plt.ylabel('Currency rates')
 
@@ -87,7 +124,18 @@ def currencies_details(request, currency_id: int):
 
 
 def currencies_rate(request):
-    latest_rates = CurrencyExchangeRate.objects.values('currency_id').annotate(latest_date=Max('api_date_updated'))
+    """
+    Displays a page with current exchange rates of currencies.
+
+    Args:
+       request: HttpRequest object used to generate the list of currency rates.
+
+    Returns:
+       HttpResponse with a rendered template containing the current rates of currencies.
+    """
+    latest_rates = (
+        CurrencyExchangeRate.objects.values
+        ('currency_id').annotate(latest_date=Max('api_date_updated')))
     rate = (CurrencyExchangeRate.objects.filter(
         api_date_updated__in=[item['latest_date'] for item in latest_rates]
     ).order_by('currency__code').select_related('currency').order_by('currency__code')
@@ -100,12 +148,25 @@ def currencies_rate(request):
         'active_menu': 'Currencies rate'}
     return render(request, 'AvailableCurrencies/currencies_rate.html', context)
 
+
 @login_required()
 def compare_previous_day_rate(request):
+    """
+    Compares the exchange rates of currencies with those of the previous day.
+
+    Args:
+        request: HttpRequest object used to generate comparative data.
+
+    Returns:
+        HttpResponse with a rendered template
+        containing the comparison of currency rates from the previous day.
+    """
     today = date.today()
     currency_list = AvailableCurrency.objects.all()
     yesterday_date = today - timedelta(days=1)
-    today_rates = {rate.currency_id: rate for rate in CurrencyExchangeRate.objects.filter(api_date_updated=today)}
+    today_rates = \
+        {rate.currency_id:
+             rate for rate in CurrencyExchangeRate.objects.filter(api_date_updated=today)}
     yesterday_rates = {rate.currency_id: rate for rate in
                        CurrencyExchangeRate.objects.filter(api_date_updated=yesterday_date)}
     difference = []
