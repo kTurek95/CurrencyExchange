@@ -25,6 +25,7 @@ table {
     padding: 50px;
     max-width: 700px;
     margin: auto;
+    background-color: white;
 }
 
 .form-title {
@@ -42,4 +43,13 @@ table {
 .wallet{
     width: 50%;
     margin-left: 425px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    margin: auto;
 }

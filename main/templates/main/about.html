@@ -1,6 +1,6 @@
 {%  load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     {% block head %}
     <meta charset="UTF-8">
@@ -102,7 +102,25 @@
         {% endif %}
     </p>
 </form>
-
+<br>
+<br>
+<br>
+<div class="row">
+  <div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{% static 'main/img/Currency.png' %}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Currency news</h5>
+        <p class="card-text">Click the button below to see a fun fact about currencies</p>
+        <a href="{% url 'currencies:news' %}" class="btn btn-primary">Show a Currency Fun Fact</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 {% endblock %}
 
 {% block messages %}
