@@ -1,0 +1,20 @@
+{% extends 'main/about.html' %}
+{% block title %} News {% endblock %}
+{% block content %}
+<div class="container overflow-hidden text-center" style="padding-top: 50px">
+  <div class="row gy-5">
+    {% for currency, response in currency_and_responses_list %}
+        <div class="col-6">
+            <div class="card border-dark mb-3">
+              <div class="card-header">
+                  <h5>{{ currency }}</h5>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ response }}</p>
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

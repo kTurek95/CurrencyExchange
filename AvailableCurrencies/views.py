@@ -13,6 +13,8 @@ Functions:
 """
 
 from datetime import datetime, timedelta, date
+import random
+
 import matplotlib
 from matplotlib import pyplot as plt
 import matplotlib.dates as mdates
@@ -23,6 +25,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import AvailableCurrency, CurrencyExchangeRate
+from openai import OpenAI
 
 
 def currencies():
@@ -183,3 +186,78 @@ def compare_previous_day_rate(request):
         'active_menu': 'Available currencies'}
 
     return render(request, 'AvailableCurrencies/currency-compare-to-previous-day.html', context)
+
+
+def get_currency_from_database():
+    """
+    Retrieves a random selection of four available currencies from the database,
+    excluding any currency labeled as 'Global'. This function queries the AvailableCurrency
+    model, fetches all currency records except for those associated with 'Global',
+    and then randomly selects four distinct currencies from this filtered list.
+
+    Returns:
+        list: A list of four randomly chosen currency objects.
+    """
+    currency = AvailableCurrency.objects.all().exclude(country_name='Global')
+    chosen_currency = random.choices(currency, k=4)
+    return chosen_currency
+
+
+def chosen_currency_news(request):
+    """
+    Generates interesting and concise facts about a set of chosen currencies using an AI model.
+    This function first calls 'get_currency_from_database' to retrieve a list of currencies.
+    It then creates a request for the OpenAI GPT-4 model, asking it to generate facts about these currencies.
+    The AI's response is formatted and split into separate facts corresponding to each currency.
+    Finally, these facts are paired with their respective currencies and passed to the template
+    'currency-news.html' for rendering.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        HttpResponse: An HttpResponse object that renders the 'currency-news.html' template,
+                      including the list of currencies paired with their AI-generated facts.
+    """
+    chosen_currencies_list = get_currency_from_database()
+    client = OpenAI()
+    responses_currencies_list = []
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {
+                "role": "system",
+                "content": "Hey Currency assistance, you're a specialist in currency and cryptocurrencies."
+                           "I want you to write me an interesting fact about the currencies I provide you with."
+                           "The facts should be short and concise."
+                           "They don't have to strictly relate to the  specific  currency;"
+                           "they  can  be  tangential  topics.Please write st least 2 sentences about each currency. "
+                           "Here  's the example structure I' m  expecting:"
+                           f"{chosen_currencies_list[0]}: "
+                           f"{chosen_currencies_list[1]}:  "
+                           f"{chosen_currencies_list[2]} :"
+            },
+            {
+                "role": "user",
+                "content": f"Hey chat, can you please write down some fun facts about {chosen_currencies_list} ?"
+                           f"Please write only responses without any unnecessary text."
+            }
+        ],
+        temperature=1,
+        max_tokens=700,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+    )
+
+    responses_currencies_list.append(response.choices[0].message.content)
+    responses_string = responses_currencies_list[0]
+    responses = responses_string.split("\n\n")
+    currency_and_responses = zip(chosen_currencies_list, responses)
+    currency_and_responses_list = list(currency_and_responses)
+
+    context = {
+        'currency_and_responses_list': currency_and_responses_list
+    }
+
+    return render(request, 'AvailableCurrencies/currency-news.html', context)
