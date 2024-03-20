@@ -120,6 +120,20 @@
     </div>
   </div>
 </div>
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{% static 'main/img/Crypto.png' %}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Crypto news</h5>
+        <p class="card-text">Click the button below to see a fun fact about Cryptocurrencies</p>
+        <a href="{% url 'crypto:news' %}" class="btn btn-primary">Show a Crypto Fun Fact</a>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}
 
