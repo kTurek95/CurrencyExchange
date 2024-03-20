@@ -18,6 +18,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import CryptoTokenCurrency
+import random
+from openai import OpenAI
 
 
 def crypto_token(request):
@@ -75,3 +77,55 @@ def crypto_token_details(request, crypto_id: int):
         'active_menu': 'Available Crypto/Tokens'}
 
     return render(request, 'CryptoCurrencies/crypto-token-details.html', context)
+
+
+def get_crypto_from_database():
+    crypto = CryptoTokenCurrency.objects.all()
+    chosen_crypto = random.choices(crypto, k=4)
+    return chosen_crypto
+
+
+def chosen_crypto_news(request):
+    chosen_crypto_list = get_crypto_from_database()
+    client = OpenAI()
+    responses_crypto_list = []
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {
+                "role": "system",
+                "content": "Hey Currency assistance, you're a specialist in currency and cryptocurrencies."
+                           "I want you to write me an interesting fact about the currencies I provide you with."
+                           "The facts should be short and concise."
+                           "They don't have to strictly relate to the  specific  currency;"
+                           "they  can  be  tangential  topics."
+                           "Please write st least 2 sentences about each Crypto currency. "
+                           "Here  's the example structure I' m  expecting:"
+                           f"{chosen_crypto_list[0]}: "
+                           f"{chosen_crypto_list[1]}:  "
+                           f"{chosen_crypto_list[2]} :"
+            },
+            {
+                "role": "user",
+                "content": f"Hey chat, can you please write down some fun facts about {chosen_crypto_list} ?"
+                           f"Please write only responses without any unnecessary text."
+            }
+        ],
+        temperature=1,
+        max_tokens=700,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0
+    )
+
+    responses_crypto_list.append(response.choices[0].message.content)
+    responses_string = responses_crypto_list[0]
+    responses = responses_string.split("\n\n")
+    crypto_and_responses = zip(chosen_crypto_list, responses)
+    crypto_and_responses_list = list(crypto_and_responses)
+
+    context = {
+        'crypto_and_responses_list': crypto_and_responses_list
+    }
+
+    return render(request, "CryptoCurrencies/crypto_news.html", context)
