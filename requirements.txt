@@ -9,3 +9,4 @@ Pillow>=10.2.0
 python-dotenv==1.0.0
 tqdm==4.66.2
 neverbounce-sdk==4.3.0
+openai==1.14.1
