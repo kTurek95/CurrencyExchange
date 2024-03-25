@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'import_export',
     'tinymce',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
     'CurrencyPairs.apps.CurrencypairsConfig',
     'AvailableCurrencies.apps.AvailablecurrenciesConfig',
@@ -164,3 +166,7 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 django_heroku.settings(locals())
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
