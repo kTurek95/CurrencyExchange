@@ -49,8 +49,8 @@
                 </button>
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'wallet:info' %}">Create Wallet</a></li>
-                    <li><a class="dropdown-item" href="{% url 'wallet:transactions' %}">Check transaction history</a></li>
-                    <li><a class="dropdown-item" href="{% url 'wallet:transaction' %}">Make transaction</a></li>
+                    <li><a class="dropdown-item" href="{% url 'wallet:transactions' %}">Chose wallet</a></li>
+                    <li><a class="dropdown-item" href="{% url 'wallet:transaction' %}" hidden>Make transaction </a></li>
                     <li><a class="dropdown-item" href="{% url 'wallet:balance' %}">Check balance</a></li>
                   </ul>
             </div>
@@ -70,6 +70,19 @@
 </div>
 </div>
 </nav>
+{% block messages %}
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div class="alert alert-success" style="text-align: center">
+            {{ message }}
+        </div>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div class="alert alert-danger" style="text-align: center">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endfor %}
+{% endblock messages %}
 {% block content %}
 <div class="info-container">
     <h1>Currency Exchange app</h1>
@@ -136,13 +149,5 @@
 </div>
 </div>
 {% endblock %}
-
-{% block messages %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="{{ message.tags }}">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
-{% endblock messages %}
 </body>
 </html>
