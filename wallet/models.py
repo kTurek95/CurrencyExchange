@@ -32,6 +32,8 @@ class Transaction(models.Model):
         choices=TRANSACTION_TYPE_CHOICES,
     )
 
+    purchased_currency = models.CharField(max_length=10, blank=False, null=True)
+
     COMPLETED = 'COMPLETED'
     IN_PROGRESS = 'IN_PROGRESS'
     REJECTED = 'REJECTED'
@@ -44,4 +46,8 @@ class Transaction(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
     )
+
+    value_in_USD = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+    balance_after_transaction = models.DecimalField(max_digits=9, decimal_places=2, null=True)
+
     date = models.DateTimeField()
