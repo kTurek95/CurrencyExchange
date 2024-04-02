@@ -14,8 +14,15 @@
                 <option value="{{ wallet.id }}">{{ wallet }}</option>
             {% endfor %}
         </select>
-        <div class="wallet-button">
-            <button type="submit">Show Transactions</button>
+        <div class="container text-center mt-4">
+            <div class="row align-items-start">
+            <div class="col">
+                <button type="submit"  name="action" value="show_transaction">Show Transactions</button>
+            </div>
+            <div class="col">
+                <button type="submit" name="action" value="make_transaction">Make Transactions</button>
+            </div>
+            </div>
         </div>
     </form>
     {% if error %}
