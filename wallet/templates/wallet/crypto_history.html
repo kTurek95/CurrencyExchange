@@ -5,15 +5,18 @@
 {% endblock head %}
 {% block title %} Crypto transaction history {% endblock %}
 {% block content %}
-    <h2 class="wallet-name">Currency wallet</h2>
+    <h2 class="wallet-name">Crypto wallet</h2>
     <table class="table">
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">Amount</th>
+          <th scope="col">Purchased Currency</th>
+          <th scope="col">Value in USD</th>
           <th scope="col">Transaction Type</th>
           <th scope="col">Status</th>
           <th scope="col">Date</th>
+          <th scope="col">Balance(USD)</th>
         </tr>
       </thead>
       <tbody>
@@ -21,11 +24,17 @@
             <tr>
               <th scope="row">{{ forloop.counter }}</th>
               <td>{{ transaction.amount }}</td>
+              <td> {{ transaction.purchased_currency }}</td>
+              <td> {{ transaction.value_in_USD }}</td>
               <td> {{ transaction.transaction_type }}</td>
               <td> {{ transaction.status }}</td>
               <td> {{ transaction.date }}</td>
+              <td> {{ transaction.balance_after_transaction }}</td>
             </tr>
         {% endfor %}
       </tbody>
     </table>
+    <button type="button" class="btn bnt-light">
+        <a href="{% url 'wallet:transactions' %}">Previous page</a>
+    </button>
 {% endblock %}
