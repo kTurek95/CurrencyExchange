@@ -25,5 +25,5 @@ class CryptoTokenRate(models.Model):
             result = self.scientific_notation_number(float(number[0].split('e')[0]), -1 * int(number[1]))
             return f'{self.token.name}: {round(result, 6)}'
         else:
-            return self.token.name + ': ' + self.rate_to_usd + '$'
+            return self.token.name + ': ' + self.rate_to_usd
 
