@@ -171,18 +171,87 @@ def wallet_selection(request):
         return render(request, 'wallet/wallet_selection.html', context)
 
 
-def wallet_transaction(request):
+def prepare_and_process_wallet_transaction(request):
     """
-    [In Progress] Prepares the interface for conducting transactions.
-
-    This view is intended to render a page where users will be able to carry out
-    transactions. Currently, the page is in the development phase and does not yet
-    include the logic for processing transactions.
+    Prepares and processes a wallet transaction for an authenticated user based on session data and form inputs.
+    This function determines whether the user's wallet uses traditional currency or cryptocurrency and
+    prepares the appropriate form for transaction input. If the request method is POST, the function will
+    attempt to process the transaction.
 
     Args:
-    - request (HttpRequest): The HTTP request object.
+        request (HttpRequest): The HTTP request object containing user and session data.
 
     Returns:
-    - HttpResponse: Renders the page for making transactions.
+        HttpResponse: Renders the transaction form with the relevant context or redirects after processing the transaction.
+
+    Raises:
+        ValueError: If the user is unauthenticated or if the form input is invalid, an error message is displayed.
     """
-    return render(request, 'wallet/make_transaction.html')
+
+    wallet_instance = None
+    selected_wallet_id = request.session.get('selected_wallet_id')
+    if request.user.is_authenticated:
+        user_id = request.user.id
+        wallet_instance = Wallet.objects.get(user_id=user_id, id=selected_wallet_id)
+
+        if wallet_instance.currency_id is None and wallet_instance.crypto_currency_id is not None:
+            wallet_info = f'{wallet_instance.balance} - {wallet_instance.crypto_currency.name}'
+            crypto = CryptoTokenCurrency.objects.all()
+            form = WalletTransactionForm(currency_choices=crypto)
+
+        elif wallet_instance.currency_id is not None and wallet_instance.crypto_currency_id is None:
+            wallet_info = f'{wallet_instance.balance} - {wallet_instance.currency.name}'
+            currrencies = AvailableCurrency.objects.all().exclude(country_name='Global').order_by('code')
+            form = WalletTransactionForm(currency_choices=currrencies)
+
+    if request.method == 'POST':
+        if wallet_instance.currency_id is not None and wallet_instance.crypto_currency_id is None:
+            form = (
+                WalletTransactionForm(
+                    request.POST, currency_choices=AvailableCurrency.objects.all().exclude(
+                        country_name='Global').order_by('code')))
+        elif wallet_instance.currency_id is None and wallet_instance.crypto_currency_id is not None:
+            form = WalletTransactionForm(request.POST, currency_choices=None)
+
+        if form.is_valid():
+            wallet_instance_id = wallet_instance.id
+            request.session['wallet_instance_id'] = wallet_instance_id
+            amount = form.cleaned_data['amount']
+            request.session['amount'] = int(amount)
+            if 'dane_formularza_crypto' in request.session:
+                del request.session['dane_formularza_crypto']
+            elif 'dane_formularza_currency' in request.session:
+                del request.session['dane_formularza_currency']
+
+            if 'currency' in form.cleaned_data.keys():
+                selected_currency = form.cleaned_data['currency'].name
+                request.session['selected_currency'] = selected_currency
+                currency_id = form.cleaned_data['currency'].id
+                request.session['dane_formularza_currency'] = currency_id
+
+            elif 'crypto_currency' in form.cleaned_data.keys():
+                selected_crypto = form.cleaned_data['crypto_currency'].name
+                request.session['selected_crypto'] = selected_crypto
+                crypto_currency_id = form.cleaned_data['crypto_currency'].id
+                request.session['dane_formularza_crypto'] = crypto_currency_id
+
+            return HttpResponseRedirect(reverse('wallet:wallet_transaction'))
+
+        else:
+            messages.error(request, 'Invalid input.')
+
+    else:
+        if wallet_instance.currency_id is not None and wallet_instance.crypto_currency_id is None:
+            form = (
+                WalletTransactionForm(
+                    currency_choices=AvailableCurrency.objects.all().exclude(
+                        country_name='Global').order_by('code')))
+        elif wallet_instance.currency_id is None and wallet_instance.crypto_currency_id is not None:
+            form = (
+                WalletTransactionForm(currency_choices=None))
+
+    context = {
+        'wallet_info': wallet_info,
+        'form': form,
+    }
+    return render(request, 'wallet/make_transaction.html', context)
