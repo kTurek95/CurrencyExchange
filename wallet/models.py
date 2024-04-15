@@ -18,6 +18,7 @@ class Wallet(models.Model):
 
 
 class Transaction(models.Model):
+    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='users', default=0)
     wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name='transactions')
     amount = models.DecimalField(max_digits=9, decimal_places=2)
 
