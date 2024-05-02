@@ -1,4 +1,5 @@
 {% extends 'main/about.html' %}
+{% load crispy_forms_tags %}
 {% block head %}
 {%  load static %}
 {{ block.super }}
@@ -6,4 +7,10 @@
 {% block title %} Make transaction {% endblock %}
 {% block content %}
     <h2 style="text-align: center">This feature is currently under development</h2>
+    <h2>{{ wallet_info }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
+
 {% endblock %}
