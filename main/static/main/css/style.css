@@ -53,3 +53,27 @@ table {
     max-width: 500px;
     margin: auto;
 }
+
+#result-modal{
+    display: none;
+    margin-top: 20%;
+    text-align: center;
+}
+#fun-fact-cards {
+    margin-top: 230px;
+}
+
+.modal-title {
+    text-align: center;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
