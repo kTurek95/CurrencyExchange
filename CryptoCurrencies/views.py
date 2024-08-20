@@ -16,8 +16,7 @@ Functions:
 
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
-from .models import CryptoTokenCurrency
+from .models import CryptoTokenCurrency, CryptoNews
 import random
 from openai import OpenAI
 
@@ -51,7 +50,6 @@ def crypto_token(request):
     return render(request, 'CryptoCurrencies/crypto-token-list.html', context)
 
 
-@ login_required
 def crypto_token_details(request, crypto_id: int):
     """
     View for displaying the details of a specific crypto token.
@@ -86,46 +84,19 @@ def get_crypto_from_database():
 
 
 def chosen_crypto_news(request):
-    chosen_crypto_list = get_crypto_from_database()
-    client = OpenAI()
-    responses_crypto_list = []
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {
-                "role": "system",
-                "content": "Hey Currency assistance, you're a specialist in currency and cryptocurrencies."
-                           "I want you to write me an interesting fact about the currencies I provide you with."
-                           "The facts should be short and concise."
-                           "They don't have to strictly relate to the  specific  currency;"
-                           "they  can  be  tangential  topics."
-                           "Please write st least 2 sentences about each Crypto currency. "
-                           "Here  's the example structure I' m  expecting:"
-                           f"{chosen_crypto_list[0]}: "
-                           f"{chosen_crypto_list[1]}:  "
-                           f"{chosen_crypto_list[2]} :"
-            },
-            {
-                "role": "user",
-                "content": f"Hey chat, can you please write down some fun facts about {chosen_crypto_list} ?"
-                           f"Please write only responses without any unnecessary text."
-            }
-        ],
-        temperature=1,
-        max_tokens=700,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
+    crypto_news_from_database = CryptoNews.objects.order_by('id')[:4]
 
-    responses_crypto_list.append(response.choices[0].message.content)
-    responses_string = responses_crypto_list[0]
-    responses = responses_string.split("\n\n")
-    crypto_and_responses = zip(chosen_crypto_list, responses)
-    crypto_and_responses_list = list(crypto_and_responses)
+    crypto_name = []
+    description = []
+    for news in crypto_news_from_database:
+        data = (str(news).split(':'))
+        crypto_name.append(data[0])
+        description.append(data[1])
+
+    crypto_name_and_news = zip(crypto_name, description)
 
     context = {
-        'crypto_and_responses_list': crypto_and_responses_list
+        'crypto_name_and_news': crypto_name_and_news
     }
 
     return render(request, "CryptoCurrencies/crypto_news.html", context)

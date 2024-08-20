@@ -27,3 +27,10 @@ class CryptoTokenRate(models.Model):
         else:
             return self.token.name + ': ' + self.rate_to_usd
 
+
+class CryptoNews(models.Model):
+    crypto_name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.description
