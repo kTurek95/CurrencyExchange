@@ -23,8 +23,7 @@ from django.shortcuts import render
 from django.db.models import Max
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
-from .models import AvailableCurrency, CurrencyExchangeRate
+from .models import AvailableCurrency, CurrencyExchangeRate, CurrencyNews
 from openai import OpenAI
 
 
@@ -56,7 +55,6 @@ def currencies_list(request):
     return render(request, 'AvailableCurrencies/currencies_list.html', context)
 
 
-@ login_required()
 def currencies_details(request, currency_id: int):
     """
     Displays the details and historical exchange rate chart for a selected currency.
@@ -152,7 +150,6 @@ def currencies_rate(request):
     return render(request, 'AvailableCurrencies/currencies_rate.html', context)
 
 
-@login_required()
 def compare_previous_day_rate(request):
     """
     Compares the exchange rates of currencies with those of the previous day.
@@ -205,59 +202,27 @@ def get_currency_from_database():
 
 def chosen_currency_news(request):
     """
-    Generates interesting and concise facts about a set of chosen currencies using an AI model.
-    This function first calls 'get_currency_from_database' to retrieve a list of currencies.
-    It then creates a request for the OpenAI GPT-4 model, asking it to generate facts about these currencies.
-    The AI's response is formatted and split into separate facts corresponding to each currency.
-    Finally, these facts are paired with their respective currencies and passed to the template
-    'currency-news.html' for rendering.
+    Displays the latest currency news on the website.
+
+    The function retrieves the last 4 records from the `CurrencyNews` model based on the `id` field (in descending order) and processes them to extract the currency code and the associated fact or news. The results are then passed to the `currency-news.html` template, where they are displayed as a list of paired values (currency code, fact).
 
     Args:
-        request: The HTTP request object.
+        request: An `HttpRequest` object representing the HTTP request sent by the user.
 
     Returns:
-        HttpResponse: An HttpResponse object that renders the 'currency-news.html' template,
-                      including the list of currencies paired with their AI-generated facts.
+        HttpResponse: An `HttpResponse` object containing the generated HTML page with currency news.
     """
-    chosen_currencies_list = get_currency_from_database()
-    client = OpenAI()
-    responses_currencies_list = []
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=[
-            {
-                "role": "system",
-                "content": "Hey Currency assistance, you're a specialist in currency and cryptocurrencies."
-                           "I want you to write me an interesting fact about the currencies I provide you with."
-                           "The facts should be short and concise."
-                           "They don't have to strictly relate to the  specific  currency;"
-                           "they  can  be  tangential  topics.Please write st least 2 sentences about each currency. "
-                           "Here  's the example structure I' m  expecting:"
-                           f"{chosen_currencies_list[0]}: "
-                           f"{chosen_currencies_list[1]}:  "
-                           f"{chosen_currencies_list[2]} :"
-            },
-            {
-                "role": "user",
-                "content": f"Hey chat, can you please write down some fun facts about {chosen_currencies_list} ?"
-                           f"Please write only responses without any unnecessary text."
-            }
-        ],
-        temperature=1,
-        max_tokens=700,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
+    currency_news_from_database = CurrencyNews.objects.order_by('-id')[:4]
+    currency_code_and_name = []
+    currency_fun_fact = []
+    for currency_news in currency_news_from_database:
+        currency_code_and_name.append(str(currency_news).split(':')[0])
+        currency_fun_fact.append(str(currency_news).split(':')[1])
 
-    responses_currencies_list.append(response.choices[0].message.content)
-    responses_string = responses_currencies_list[0]
-    responses = responses_string.split("\n\n")
-    currency_and_responses = zip(chosen_currencies_list, responses)
-    currency_and_responses_list = list(currency_and_responses)
+    currency_news_zip = zip(currency_code_and_name, currency_fun_fact)
 
     context = {
-        'currency_and_responses_list': currency_and_responses_list
+        'currency_news_zip': list(currency_news_zip)
     }
 
     return render(request, 'AvailableCurrencies/currency-news.html', context)
