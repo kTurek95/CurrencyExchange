@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='cryptotokencurrency',
             name='description',
-            field=models.CharField(max_length=3000, null=True),
+            field=models.CharField(max_length=5000, null=True),
         ),
     ]
