@@ -1,6 +1,31 @@
-.register-form {
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #f9f9f9;
+.register-form-div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.register-input {
+    width: 99%;
+    box-sizing: border-box;
+    margin-left: 5px;
+}
+
+.register-label {
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.register-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    margin-left: 5px;
+}
+
+
+.modal {
+    display: none;
+}
+
+.modal-title-register {
+    color: red;
 }
