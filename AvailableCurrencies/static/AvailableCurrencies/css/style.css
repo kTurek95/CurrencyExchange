@@ -27,3 +27,34 @@
     align-items: center;
     padding-bottom: 30px;
 }
+.main-content-div {
+    width: 75vw;
+    height: 50vw;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.currencies-list-nav {
+    margin-top: 50px;
+}
+
+.currencies-container {
+    display: flex;
+    gap: 15px;
+}
+
+.currency-item {
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 400px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to left, #8ba7a7, #c4c4c4);
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.5);
+}
