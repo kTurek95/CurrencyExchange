@@ -26,3 +26,12 @@ class CurrencyExchangeRate(models.Model):
 
     def __str__(self):
         return f'{self.currency.code} - {self.rate_to_usd}'
+
+
+class CurrencyNews(models.Model):
+    currency_code = models.CharField(max_length=10)
+    currency_name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return f'{self.description}'
