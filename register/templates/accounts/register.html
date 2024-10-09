@@ -1,6 +1,7 @@
-{%  extends 'main/about.html' %}
+{% extends 'main/about.html' %}
+{% load static %}
 
-{%  block title %} Create account {% endblock %}
+{% block title %} Create account {% endblock %}
 
 {% block messages %}
     {% if messages %}
@@ -10,37 +11,46 @@
     {% endif %}
 {% endblock %}
 
-{%  block content %}
-<form class="register-form" method="POST">
-    {%  csrf_token %}
-    <p>
-        <p>Username*</p>
-        <input type="text" name="username" id="id_username">
-    </p>
-    <p>
-        <p>Email*</p>
-        <input type="email" name="email" id="id_email">
-    </p>
-    <p>
-        <p>First name*</p>
-        <input type="text" name="first_name" id="id_password1">
-    </p>
-    <p>
-        <p>Last name*</p>
-        <input type="text" name="last_name" id="id_password1">
-    </p>
-    <p>
-        <p>Password*</p>
-        <input type="password" name="password1" id="id_password1">
-    </p>
-    <p>
-        <p>Password confirmation*</p>
-        <input type="password" name="password2" id="id_password1">
-
-    </p>
-    <p>
-        <input type="submit" value="Register">
-    </p>
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        <div id="username-div" class="register-form-div">
+            <label class="register-label" for="id_username">Username</label>
+            <input class="register-input" type="text" name="username" id="id_username">
+        </div>
+        <div id="first-name-div" class="register-form-div">
+            <label class="register-label" for="id_first_name">First name</label>
+            <input class="register-input" type="text" name="first_name" id="id_first_name">
+        </div>
+        <div id="last-name-div" class="register-form-div">
+            <label class="register-label" for="id_last_name">Last name</label>
+            <input class="register-input" type="text" name="last_name" id="id_last_name">
+        </div>
+        <div id="email-div" class="register-form-div">
+            <label class="register-label" for="id_email">Email</label>
+            <input class="register-input" type="email" name="email" id="id_email">
+        </div>
+        <div id="password1-div" class="register-form-div">
+            <label class="register-label" for="id_password1">Password</label>
+            <input class="register-input" type="password" name="password1" id="id_password1">
+        </div>
+        <div id="password2-div" class="register-form-div">
+            <label class="register-label" for="id_password2">Confirm password</label>
+            <input class="register-input" type="password" name="password2" id="id_password2">
+        </div>
+        <button class="register-button" type="submit" value="Register">Register</button>
+        <div class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title-register">Passwords do not match</h5>
+                        <button id="modal-button" type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     {% if form.non_field_errors %}
         <div class="errorlist">
             {% for error in form.non_field_errors %}
@@ -62,5 +72,4 @@
             </ul>
         {% endif %}
     {% endfor %}
-</form>
 {% endblock %}
