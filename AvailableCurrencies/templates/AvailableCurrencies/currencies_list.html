@@ -10,7 +10,7 @@
             {% for currency in currencies_list %}
                 {% if currency.country_code != 'Crypto' and currency.country_code != 'None' and currency.name %}
                     <div class="currency-item">
-                        {{ currency.name }}
+                        <a href="{% url 'currencies:details' currency.pk %}">{{ currency.name }}</a>
                         <img src="{{ currency.image }}">
                     </div>
 
