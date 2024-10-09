@@ -21,11 +21,14 @@ table {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 5px solid black;
     padding: 50px;
-    max-width: 700px;
+    max-width: 1200px;
     margin: auto;
-    background-color: white;
+    background: linear-gradient(to left, #8ba7a7, #c4c4c4);
+    border-radius: 50px;
+    height: 280px;
+    border: 1px solid black;
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 .form-title {
@@ -38,6 +41,8 @@ table {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 100px;
+    margin-top: 80px;
 }
 
 .wallet{
@@ -48,19 +53,21 @@ table {
 .card {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    max-width: 500px;
     margin: auto;
+    border-radius: 50px;
+    background: linear-gradient(to left, #8ba7a7, #c4c4c4);
+    border: 1px solid black;
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 #result-modal{
     display: none;
-    margin-top: 20%;
+    margin-top: 29%;
     text-align: center;
 }
 #fun-fact-cards {
-    margin-top: 230px;
+    margin-top: 200px;
 }
 
 .modal-title {
@@ -76,4 +83,255 @@ table {
 .modal-footer {
     display: flex;
     justify-content: center;
+}
+
+.currency-label {
+    flex: 1; /* Umożliwia równomierne rozciągnięcie elementów */
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    height: 100%; /* Wypełnienie pełnej wysokości rodzica */
+    box-sizing: border-box; /* Upewnia się, że padding jest wliczany w rozmiar */
+}
+
+.about-calculate-button {
+    margin: 50px 0px 0px 30px;
+    border-radius: 50px;
+    padding: 10px 45px 10px 45px;
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+}
+
+.about-check-button {
+    background-color: white;
+    padding: 10px 55px 10px 55px;
+    border-radius: 50px;
+    margin-top: 50px;
+    margin-left: 280px;
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+}
+
+.about-check-button:hover {
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.col {
+    flex: 1;
+}
+
+.about-currency-info {
+    padding: 10px 55px 10px 55px;
+    display: inline;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.fun-fact-button:hover {
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+}
+
+.fun-fact-button {
+    background-color: white;
+    border-radius: 50px;
+    margin-left: 20px;
+    padding: 10px 40px 10px 40px;
+    border: 1px solid black;
+    color: black;
+    text-decoration: none;
+}
+
+.card-body {
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.about-first-text {
+   font-size: 65px;
+}
+
+.modal-content {
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+    border-radius: 50px;
+    border: 1px solid black;
+    box-shadow: 1px 1px 30px rgba(0, 0, 0, 0.5);
+}
+
+.rectangle-holder {
+    padding: 0;
+    width: 360px;
+    height: 70px;
+    border-radius: 10px;
+    display: flex;
+    align-items: stretch;
+    overflow: visible;
+}
+
+#row1 {
+    display: flex;
+    width: 100%;
+}
+
+#col1, #col2 {
+    flex: 1;
+    align-items: center;
+    display: flex;
+}
+
+.currency-input {
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+.footer-div {
+    margin-top: 100px;
+    width: 100%;
+    height: 400px;
+    border-top: 2px solid black;
+    background: #c2cad0;
+    display: flex;
+    position: relative;
+}
+
+.block-content-div {
+    min-height: calc(100vh - 480px);
+    position: relative;
+}
+
+.header-div {
+    position: relative;
+}
+
+.footer-col {
+    flex: 1;
+    border: 1px solid black;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.newsletter {
+    margin-left: 40px;
+    margin-top: 50px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.subscribe-rectangle {
+    border: none;
+    flex: 1;
+}
+
+.email-row {
+    margin-left: 40px;
+    margin-top: 50px;
+    display: flex;
+    width: 60%;
+    border: 2px solid white;
+    height: 50px;
+}
+
+.email-input {
+    flex: 1;
+    border: none;
+    color: grey;
+}
+
+.subscribe-button {
+    padding-top: 10px;
+    width: 100%;
+    background: #c2cad0;
+    border: none;
+}
+
+.footer-col-div-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.footer-div-col {
+    margin-top: 13px;
+    width: 48%;
+    height: 150px;
+    margin-bottom: 20px;
+    display: flex;
+    border-radius: 10px;
+}
+
+.footer-info {
+    margin-left: 10px;
+}
+
+.block-content-div {
+    position: relative;
+}
+
+.footer-h3 {
+    font-weight: bold;
+}
+
+.rates-div {
+    height: 250px;
+    width: 70vw;
+    border: 1px solid black;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 200px;
+    margin-bottom: 200px;
+    border-radius: 50px;
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.5);
+}
+
+.rates-div-title {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rates-div-button {
+    text-decoration: none;
+    color: black;
+    border-radius: 50px;
+    border: 1px solid black;
+    background: white;
+    padding: 10px 40px 10px 40px;
+}
+
+.rates-div-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.rates-div-button:hover {
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+}
+
+.rates-div-middle {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.rates-div-p {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 30px;
 }
