@@ -1,4 +1,52 @@
-.container_h1 {
+.crypto-a {
+    color: black;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px 20px 10px 20px;
+    background: linear-gradient( #8ba7a7, #c4c4c4);
+}
+
+.container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.currencies-rate-div {
+    margin-top: 100px;
+    padding-left: 120px;
+    padding-right: 120px;
+    margin-bottom: 50px;
+}
+
+.previous-page-button {
+    border: 1px solid black;
+    background: white;
+    text-decoration: none;
+    color: black;
+    padding: 10px 30px 10px 30px;
+    border-radius: 50px;
+    margin-left: 15%;
+}
+
+.previous-page-button:hover {
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+}
+
+.crypto-token-details-div {
+    margin-top: 30px;
     display: flex;
     justify-content: center;
+}
+
+.crypto-token-description {
+    text-align: center;
+    border: 1px solid black;
+    border-radius: 50px;
+    padding: 30px;
+    margin-bottom: 50px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 50px;
+    background: linear-gradient(to right, #8ba7a7, #c4c4c4);
+    box-shadow: 5px 8px 8px rgba(0, 0, 0, 0.5);
 }
